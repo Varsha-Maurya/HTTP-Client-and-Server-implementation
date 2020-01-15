@@ -1,0 +1,60 @@
+How to RUN
+
+Build the server and client module
+./gradlew :server:build
+./gradlew :client:build
+
+
+Check the resource index.html file exist. This should be a html file without subject
+Subject : Updating the resource by PUT Method.
+1. cat server/build/resources/main/index.html
+
+
+
+Change to SimpleServerClient directory
+
+
+Start the server
+java -cp server/build/resources/main/:server/build/classes/java/main/ SimpleHttpServer 5553
+You should see something like this
+Started socket at port 5553
+........
+
+
+
+Test the client (Open a new terminal)
+Change to SimpleServerClient directory
+
+1. GET a resource that exist.
+
+java -cp client/build/resources/main/:client/build/classes/java/main/ SimpleHttpClient localhost 5553 GET index.html
+
+	You should see an index.html displayed .. make sure it doesn't have the below text in the body
+	Subject : Updating the resource by PUT Method.
+	This is 200 OK response
+
+
+
+2. GET a resource that does not exist
+
+java -cp client/build/resources/main/:client/build/classes/java/main/ SimpleHttpClient localhost 5553 GET index1.html
+
+This will be a 404 Not Found
+
+
+
+3. PUT a resource.
+
+java -cp client/build/resources/main/:client/build/classes/java/main/ SimpleHttpClient localhost 5553 PUT index.html
+
+This will be a 200 OK response
+
+
+
+Check if the resource was updated on the server side after PUT
+
+cat server/build/resources/main/index.html
+You should now be able to see the Subject
+Subject : Updating the resource by PUT Method.
+
+We have succesfully updated the resource on the server.
